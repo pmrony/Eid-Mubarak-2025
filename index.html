@@ -17,10 +17,9 @@
             box-shadow: 0 8px 16px rgba(0,0,0,0.2); max-width: 400px;
             width: 100%; margin-top: 20px;
         }
-        h1 { color: #2c3e50; margin-bottom: 20px; font-size: 1.8em; }
         .wheel-container {
             position: relative; width: 280px; height: 280px;
-            margin: 30px auto;
+            margin: 20px auto;
         }
         #wheel {
             width: 100%; height: 100%; border-radius: 50%;
@@ -45,7 +44,7 @@
         }
         #pointer {
             width: 0; height: 0; border-left: 20px solid transparent;
-            border-right: 20px solid transparent; border-top: 35px solid #c0392b;
+            border-right: 20px solid transparent; border-top: 35px solid #c0392b; /* Red pointer */
             position: absolute; top: -15px; left: 50%;
             transform: translateX(-50%); z-index: 10;
             filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));
@@ -60,44 +59,97 @@
         button:hover { background-color: #2980b9; }
         button:active { transform: translateY(1px); box-shadow: 0 2px 3px rgba(50,50,93,.11), 0 1px 2px rgba(0,0,0,.08); }
         button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
-        #result, #shareSection, #bikashSection { margin-top: 25px; padding: 15px; background-color: #ecf0f1; border-radius: 8px; }
+
+        #result, #shareSection, #bikashSection {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 8px;
+        }
+
+        #result {
+            font-size: 1.1em;
+        }
+        .congrats-text {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .prize-amount-text {
+            color: #c0392b;
+            font-weight: bold;
+        }
+
+        #shareSection p {
+            font-size: 1.05em;
+            line-height: 1.5;
+        }
+        .share-instruction-text {
+            color: #2980b9;
+            font-weight: 500;
+        }
+
+        #bikashSection > p:first-child {
+            color: #2980b9;
+            font-weight: 500;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
         #bikashSection input[type="tel"] { padding: 10px; margin-right: 8px; border: 1px solid #bdc3c7; border-radius: 5px; font-size: 16px; width: calc(70% - 10px); }
         #bikashSection button { width: calc(30% - 10px); padding: 10px 0; }
 
-        .social-actions { display: flex; justify-content: space-between; align-items: center; max-width: 400px; width: 100%; margin: 20px auto 15px auto; padding: 0 15px; box-sizing: border-box; }
+        .social-actions {
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 400px; width: 100%;
+            margin: 15px auto 10px auto; /* Reduced bottom margin */
+            padding: 0 15px; box-sizing: border-box;
+        }
         .social-button { background: none; border: none; font-size: 1.8em; cursor: pointer; color: #7f8c8d; transition: color 0.3s ease, transform 0.2s ease; padding: 5px; margin: 0; box-shadow: none; }
         .social-button:hover { color: #34495e; transform: scale(1.1); }
         #likeButton.liked { color: #e74c3c; }
         #commentIcon { color: #3498db; }
         #commentIcon:hover { color: #2980b9; }
-        .comments-section { max-width: 400px; width: 100%; margin: 15px auto; padding: 15px; background-color: #fff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: left; }
-        .comments-section h3 { margin-top: 0; margin-bottom: 15px; color: #34495e; border-bottom: 1px solid #ecf0f1; padding-bottom: 10px; }
+
+        .comments-section {
+            max-width: 400px; width: 100%;
+            margin: 10px auto; /* Reduced top margin */
+            padding: 15px; background-color: #fff;
+            border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        .comments-section h3 {
+            margin-top: 0; margin-bottom: 15px;
+            color: #16a085;
+            border-bottom: 1px solid #ecf0f1; padding-bottom: 10px;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.05);
+        }
         .comment-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
         .comment-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
         .comment-avatar img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd; }
         .comment-content { flex: 1; }
-        .comment-content strong { color: #2c3e50; font-weight: 600; display: block; margin-bottom: 3px; }
+        .comment-content strong {
+            color: #e67e22;
+            font-weight: 600; display: block; margin-bottom: 3px;
+        }
         .comment-content p { margin: 0 0 5px 0; color: #555; font-size: 0.95em; line-height: 1.4; }
         .comment-time { font-size: 0.8em; color: #95a5a6; }
 
-        /* Added style for the ad container to ensure proper spacing if needed */
-        .ad-container {
-            margin-top: 20px; /* Adjust as needed */
-            margin-bottom: 10px; /* Adjust as needed */
+        .ad-banner-container {
+            margin: 20px auto 10px auto;
             display: flex;
             justify-content: center;
             align-items: center;
+            width: 100%;
+            max-width: 468px;
         }
 
-
         @media (max-width: 350px) {
-            h1 { font-size: 1.5em; }
-            .wheel-container { width: 240px; height: 240px; }
+            .wheel-container { width: 240px; height: 240px; margin: 15px auto; }
             #pointer { border-left-width: 15px; border-right-width: 15px; border-top-width: 25px; top: -10px;}
             .prize-label { font-size: 1.2em; }
             #bikashSection input[type="tel"], #bikashSection button { width: 100%; margin-bottom: 10px; margin-right: 0; }
             .social-button { font-size: 1.6em; }
-            .comments-section { padding: 10px; }
+            .social-actions { margin: 10px auto 5px auto; } /* Further reduce margins on small screens */
+            .comments-section { padding: 10px; margin-top: 5px;} /* Further reduce top margin on small screens */
             .comment-avatar img { width: 35px; height: 35px; }
             .comment-item { gap: 8px; }
         }
@@ -105,28 +157,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>টাকার চাকা ঘোরান!</h1>
         <div class="wheel-container">
             <div id="wheel"></div>
             <div id="pointer"></div>
         </div>
-
-        <!-- ==== AD CODE INSERTED HERE ==== -->
-        <div class="ad-container">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : '0dbc22182226eaa58cef156fba67ac7b',
-                    'format' : 'iframe',
-                    'height' : 90,
-                    'width' : 728,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/0dbc22182226eaa58cef156fba67ac7b/invoke.js"></script>
-        </div>
-        <!-- ==== END OF AD CODE ==== -->
-
-        <button id="spinButton">চাকা ঘোরান</button>
+        <button id="spinButton">Spin করুন</button>
         <div id="result" style="display:none;"></div>
         <div id="shareSection" style="display:none;">
             <p id="shareMessage"></p>
@@ -164,6 +199,19 @@
         </div>
     </div>
 
+    <div class="ad-banner-container">
+        <script type="text/javascript">
+            atOptions = {
+                'key' : '715d262e52c4b70f631fa9759104e1d6',
+                'format' : 'iframe',
+                'height' : 60,
+                'width' : 468,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//entertainedmagneticclients.com/715d262e52c4b70f631fa9759104e1d6/invoke.js"></script>
+    </div>
+
     <script>
         const wheel = document.getElementById('wheel');
         const spinButton = document.getElementById('spinButton');
@@ -190,7 +238,6 @@
 
         function setupWheelLabels() {
             wheel.innerHTML = '';
-
             if (wheel.offsetWidth > 0) {
                 const wheelRadius = wheel.offsetWidth / 2;
                 const labelRadiusFactor = 0.60;
@@ -201,10 +248,8 @@
                     const labelDiv = document.createElement('div');
                     labelDiv.classList.add('prize-label');
                     labelDiv.textContent = prize.value + " ৳";
-
                     const angle = index * anglePerSegment;
                     const finalRotationAngle = -angle;
-
                     labelDiv.style.transform = `
                         translateX(-50%) translateY(-50%)
                         rotate(${angle}deg)
@@ -227,6 +272,7 @@
 
              const randomIndex = Math.floor(Math.random() * prizes.length);
              wonPrize = prizes[randomIndex];
+
              const targetRotation = -(randomIndex * anglePerSegment);
              const randomSpins = 5 + Math.floor(Math.random() * 3);
              const finalRotation = (randomSpins * 360) + targetRotation;
@@ -234,36 +280,71 @@
              wheel.style.transform = `rotate(${currentRotation}deg)`;
 
              setTimeout(() => {
-                 resultDiv.textContent = `অভিনন্দন! আপনি ${wonPrize.label} জিতেছেন।`;
+                 resultDiv.innerHTML = `<span class="congrats-text">অভিনন্দন!</span> আপনি <span class="prize-amount-text">${wonPrize.label}</span> জিতেছেন।`;
                  resultDiv.style.display = 'block';
-                 shareMessagePara.textContent = `আপনার ${wonPrize.label} পুরস্কারটি পেতে, দয়া করে প্রথমে ৫ জন বন্ধুকে এই গেমটি শেয়ার করুন।`;
+                 shareMessagePara.innerHTML = `আপনার <span class="prize-amount-text">${wonPrize.label}</span> পুরস্কারটি পেতে, <span class="share-instruction-text">দয়া করে প্রথমে ৫ জন বন্ধুকে এই গেমটি ফেসবুক মেসেঞ্জারে শেয়ার করুন।</span>`;
                  shareSection.style.display = 'block';
+                 shareButton.disabled = false; // Enable share button
              }, 5000);
         });
 
         shareButton.addEventListener('click', () => {
-            const shareText = `আমি টাকার চাকা ঘুরিয়ে ${wonPrize.label} জিতেছি! আপনিও জিততে পারেন। এখনই খেলুন এই লিংকে:`;
-            const shareUrl = window.location.href;
+            shareButton.disabled = true; // Disable button after click to prevent multiple shares
+            const gameLink = window.location.href;
+            
+            // This is the message that will be proposed to be sent by the user to their friends
+            const shareMessageForFriends = `আমি "${wonPrize.label}" জিতেছি টাকার চাকা গেম খেলে! 🤑 তুমিও খেলতে পারো আর জিততে পারো আকর্ষণীয় পুরস্কার! গেমটি অন্তত ৫ জন বন্ধুকে মেসেঞ্জারে শেয়ার করলে নাকি আরও বোনাস আছে! 😉`;
+
             if (navigator.share) {
-                navigator.share({ title: 'টাকার চাকা - পুরস্কার জিতুন!', text: shareText, url: shareUrl })
-                .then(() => { console.log('Thanks for sharing!'); scheduleBikashBox(); })
-                .catch((err) => { console.error('Error sharing', err); scheduleBikashBox(); });
+                navigator.share({
+                    title: 'টাকার চাকা - ঘুরে গেল আমার ভাগ্য!', // Title for the share sheet
+                    text: shareMessageForFriends,          // Accompanying text
+                    url: gameLink                          // The link to be shared
+                })
+                .then(() => {
+                    console.log('Share dialog opened successfully.');
+                    // We assume the user shared or at least interacted with the dialog.
+                    // Proceed to show Bikash box after a delay.
+                    shareSection.style.display = 'none'; // Hide share section
+                    scheduleBikashBox();
+                })
+                .catch((err) => {
+                    console.error('Error sharing or share cancelled:', err);
+                    // Even if sharing fails or is cancelled, proceed to show Bikash box
+                    // as per the typical flow of such games.
+                    alert('শেয়ার করতে সমস্যা হয়েছে অথবা আপনি শেয়ার বাতিল করেছেন। তবুও আপনার পুরস্কারের পরবর্তী ধাপে যাওয়া হচ্ছে।');
+                    shareSection.style.display = 'none';
+                    scheduleBikashBox();
+                });
             } else {
-                alert("শেয়ার করতে সমস্যা হচ্ছে। লিঙ্কটি কপি করে শেয়ার করুন:\n" + shareUrl + "\n" + shareText);
+                // Fallback for browsers/devices that don't support navigator.share
+                alert(`আপনার ব্রাউজার সরাসরি শেয়ার সমর্থন করে না। অনুগ্রহ করে এই মেসেজটি কপি করে আপনার ৫ জন বন্ধুকে ফেসবুক মেসেঞ্জারে পাঠান:\n\n${shareMessageForFriends}\nখেলার লিংক: ${gameLink}`);
+                shareSection.style.display = 'none';
                 scheduleBikashBox();
             }
         });
 
         function scheduleBikashBox() {
+            // This message appears after the share action (successful or not)
+            const bikashInstructionPara = bikashSection.querySelector('p:first-child');
+            if (wonPrize) {
+                 bikashInstructionPara.innerHTML = `সফলভাবে শেয়ার করার জন্য ধন্যবাদ! আপনার জেতা <span class="prize-amount-text">${wonPrize.label}</span> পুরস্কারটি পেতে, নিচের বক্সে আপনার বিকাশ নাম্বার দিন এবং সেন্ড বাটনে ক্লিক করুন:`;
+            } else {
+                 bikashInstructionPara.innerHTML = `আপনার পুরস্কারটি পেতে, নিচের বক্সে আপনার বিকাশ নাম্বার দিন এবং সেন্ড বাটনে ক্লিক করুন:`;
+            }
+
             setTimeout(() => {
                 bikashSection.style.display = 'block';
                 bikashNumberInput.focus();
-            }, 10000);
+            }, 3000); // Reduced delay to 3 seconds after share attempt for quicker access
         }
 
         sendBikashButton.addEventListener('click', () => {
             const bikashNum = bikashNumberInput.value.trim();
             if (/^01[3-9]\d{8}$/.test(bikashNum)) {
+                // Redirect or process bKash number
+                console.log(`bKash number submitted: ${bikashNum} for prize: ${wonPrize ? wonPrize.label : 'Unknown'}`);
+                // Example redirection:
                 window.location.href = 'https://www.effectiveratecpm.com/hpduy20d?key=e38d3d108db3a3f973b6fad4d84d4121';
             } else {
                 alert('দয়া করে সঠিক ১১ সংখ্যার বিকাশ নাম্বার দিন (যেমন: 01xxxxxxxxx)।');
