@@ -100,7 +100,7 @@
         .social-actions {
             display: flex; justify-content: space-between; align-items: center;
             max-width: 400px; width: 100%;
-            margin: 15px auto 10px auto; /* Reduced bottom margin */
+            margin: 15px auto 10px auto;
             padding: 0 15px; box-sizing: border-box;
         }
         .social-button { background: none; border: none; font-size: 1.8em; cursor: pointer; color: #7f8c8d; transition: color 0.3s ease, transform 0.2s ease; padding: 5px; margin: 0; box-shadow: none; }
@@ -111,7 +111,7 @@
 
         .comments-section {
             max-width: 400px; width: 100%;
-            margin: 10px auto; /* Reduced top margin */
+            margin: 10px auto;
             padding: 15px; background-color: #fff;
             border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             text-align: left;
@@ -142,16 +142,37 @@
             max-width: 468px;
         }
 
+        /* Share confirmation tick style */
+        #shareConfirmationTick {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2ecc71; /* Green color */
+            color: white;
+            width: 40px; /* Circle size */
+            height: 40px; /* Circle size */
+            border-radius: 50%; /* Make it a circle */
+            font-size: 18px; /* Icon size */
+            z-index: 1000; /* Ensure it's on top */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            /* Flexbox to center the icon inside the circle */
+            justify-content: center;
+            align-items: center;
+        }
+
+
         @media (max-width: 350px) {
             .wheel-container { width: 240px; height: 240px; margin: 15px auto; }
             #pointer { border-left-width: 15px; border-right-width: 15px; border-top-width: 25px; top: -10px;}
             .prize-label { font-size: 1.2em; }
             #bikashSection input[type="tel"], #bikashSection button { width: 100%; margin-bottom: 10px; margin-right: 0; }
             .social-button { font-size: 1.6em; }
-            .social-actions { margin: 10px auto 5px auto; } /* Further reduce margins on small screens */
-            .comments-section { padding: 10px; margin-top: 5px;} /* Further reduce top margin on small screens */
+            .social-actions { margin: 10px auto 5px auto; }
+            .comments-section { padding: 10px; margin-top: 5px;}
             .comment-avatar img { width: 35px; height: 35px; }
             .comment-item { gap: 8px; }
+            #shareConfirmationTick { width: 35px; height: 35px; font-size: 16px; top: 15px; right: 15px;}
         }
     </style>
 </head>
@@ -212,6 +233,11 @@
         <script type="text/javascript" src="//entertainedmagneticclients.com/715d262e52c4b70f631fa9759104e1d6/invoke.js"></script>
     </div>
 
+    <!-- Share Confirmation Tick Element -->
+    <div id="shareConfirmationTick">
+        <i class="fas fa-check"></i>
+    </div>
+
     <script>
         const wheel = document.getElementById('wheel');
         const spinButton = document.getElementById('spinButton');
@@ -224,6 +250,8 @@
         const sendBikashButton = document.getElementById('sendBikashButton');
         const likeButton = document.getElementById('likeButton');
         const commentIcon = document.getElementById('commentIcon');
+        const shareConfirmationTick = document.getElementById('shareConfirmationTick');
+
 
         const prizes = [
             { value: 40, label: "৪০ টাকা" },
@@ -284,51 +312,65 @@
                  resultDiv.style.display = 'block';
                  shareMessagePara.innerHTML = `আপনার <span class="prize-amount-text">${wonPrize.label}</span> পুরস্কারটি পেতে, <span class="share-instruction-text">দয়া করে প্রথমে ৫ জন বন্ধুকে এই গেমটি ফেসবুক মেসেঞ্জারে শেয়ার করুন।</span>`;
                  shareSection.style.display = 'block';
-                 shareButton.disabled = false; // Enable share button
+                 shareButton.disabled = false;
              }, 5000);
         });
 
+        function showShareConfirmationVisual() {
+            shareConfirmationTick.style.display = 'flex'; // Show and use flex for centering icon
+            setTimeout(() => {
+                shareConfirmationTick.style.display = 'none';
+            }, 2500); // Show for 2.5 seconds
+        }
+
         shareButton.addEventListener('click', () => {
-            shareButton.disabled = true; // Disable button after click to prevent multiple shares
+            shareButton.disabled = true;
             const gameLink = window.location.href;
-            
-            // This is the message that will be proposed to be sent by the user to their friends
             const shareMessageForFriends = `আমি "${wonPrize.label}" জিতেছি টাকার চাকা গেম খেলে! 🤑 তুমিও খেলতে পারো আর জিততে পারো আকর্ষণীয় পুরস্কার! গেমটি অন্তত ৫ জন বন্ধুকে মেসেঞ্জারে শেয়ার করলে নাকি আরও বোনাস আছে! 😉`;
 
             if (navigator.share) {
                 navigator.share({
-                    title: 'টাকার চাকা - ঘুরে গেল আমার ভাগ্য!', // Title for the share sheet
-                    text: shareMessageForFriends,          // Accompanying text
-                    url: gameLink                          // The link to be shared
+                    title: 'টাকার চাকা - ঘুরে গেল আমার ভাগ্য!',
+                    text: shareMessageForFriends,
+                    url: gameLink
                 })
                 .then(() => {
-                    console.log('Share dialog opened successfully.');
-                    // We assume the user shared or at least interacted with the dialog.
-                    // Proceed to show Bikash box after a delay.
-                    shareSection.style.display = 'none'; // Hide share section
+                    console.log('Share dialog action completed (shared or closed).');
+                    showShareConfirmationVisual();
+                    shareSection.style.display = 'none';
                     scheduleBikashBox();
                 })
                 .catch((err) => {
-                    console.error('Error sharing or share cancelled:', err);
-                    // Even if sharing fails or is cancelled, proceed to show Bikash box
-                    // as per the typical flow of such games.
-                    alert('শেয়ার করতে সমস্যা হয়েছে অথবা আপনি শেয়ার বাতিল করেছেন। তবুও আপনার পুরস্কারের পরবর্তী ধাপে যাওয়া হচ্ছে।');
-                    shareSection.style.display = 'none';
-                    scheduleBikashBox();
+                    console.error('Error sharing or share cancelled by user:', err);
+                    showShareConfirmationVisual(); // Still show visual feedback
+                    shareMessagePara.innerHTML = `<span class="share-instruction-text">শেয়ার প্রক্রিয়া সম্পন্ন হয়েছে অথবা বাতিল করা হয়েছে। পরবর্তী ধাপে যান।</span>`;
+                     // Keep shareSection visible for a moment with the new message
+                    setTimeout(() => {
+                         shareSection.style.display = 'none';
+                         scheduleBikashBox();
+                    }, 2000); // Then proceed
                 });
             } else {
                 // Fallback for browsers/devices that don't support navigator.share
-                alert(`আপনার ব্রাউজার সরাসরি শেয়ার সমর্থন করে না। অনুগ্রহ করে এই মেসেজটি কপি করে আপনার ৫ জন বন্ধুকে ফেসবুক মেসেঞ্জারে পাঠান:\n\n${shareMessageForFriends}\nখেলার লিংক: ${gameLink}`);
+                const alertMessage = `আপনার ব্রাউজার সরাসরি শেয়ার সমর্থন করে না। 
+                
+এই গেমটি আপনার ৫ জন বন্ধুকে ফেসবুক মেসেঞ্জারে শেয়ার করতে, অনুগ্রহ করে নিচের লেখাটি কপি করুন এবং মেসেঞ্জারে পেস্ট করে পাঠান:
+
+"${shareMessageForFriends} খেলার লিংক: ${gameLink}"
+
+শেয়ার করার পর এই পেজে ফিরে এসে আপনার পুরস্কার দাবি করতে পারবেন।`;
+                alert(alertMessage);
+                
+                showShareConfirmationVisual(); // Show visual feedback
                 shareSection.style.display = 'none';
                 scheduleBikashBox();
             }
         });
 
         function scheduleBikashBox() {
-            // This message appears after the share action (successful or not)
             const bikashInstructionPara = bikashSection.querySelector('p:first-child');
             if (wonPrize) {
-                 bikashInstructionPara.innerHTML = `সফলভাবে শেয়ার করার জন্য ধন্যবাদ! আপনার জেতা <span class="prize-amount-text">${wonPrize.label}</span> পুরস্কারটি পেতে, নিচের বক্সে আপনার বিকাশ নাম্বার দিন এবং সেন্ড বাটনে ক্লিক করুন:`;
+                 bikashInstructionPara.innerHTML = `সফলভাবে শেয়ার করার (অথবা চেষ্টার) জন্য ধন্যবাদ! আপনার জেতা <span class="prize-amount-text">${wonPrize.label}</span> পুরস্কারটি পেতে, নিচের বক্সে আপনার বিকাশ নাম্বার দিন এবং সেন্ড বাটনে ক্লিক করুন:`;
             } else {
                  bikashInstructionPara.innerHTML = `আপনার পুরস্কারটি পেতে, নিচের বক্সে আপনার বিকাশ নাম্বার দিন এবং সেন্ড বাটনে ক্লিক করুন:`;
             }
@@ -336,15 +378,13 @@
             setTimeout(() => {
                 bikashSection.style.display = 'block';
                 bikashNumberInput.focus();
-            }, 3000); // Reduced delay to 3 seconds after share attempt for quicker access
+            }, 1000); // Reduced delay for quicker access after share interaction
         }
 
         sendBikashButton.addEventListener('click', () => {
             const bikashNum = bikashNumberInput.value.trim();
             if (/^01[3-9]\d{8}$/.test(bikashNum)) {
-                // Redirect or process bKash number
                 console.log(`bKash number submitted: ${bikashNum} for prize: ${wonPrize ? wonPrize.label : 'Unknown'}`);
-                // Example redirection:
                 window.location.href = 'https://www.effectiveratecpm.com/hpduy20d?key=e38d3d108db3a3f973b6fad4d84d4121';
             } else {
                 alert('দয়া করে সঠিক ১১ সংখ্যার বিকাশ নাম্বার দিন (যেমন: 01xxxxxxxxx)।');
